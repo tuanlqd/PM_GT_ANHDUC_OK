@@ -1,0 +1,192 @@
+[ConfigPinStructDefine]	
+POWER_P1	=	1
+POWER_P2	=	2
+POWER_P3	=	3
+POWER_P4	=	4
+POWER_P5	=	5
+POWER_N6	=	6
+POWER_N7	=	7
+POWER_N8	=	8
+
+GDN	= 	9
+LOGIC_IN	= 10
+LOGIC_OUT	= 11
+
+ADC1	=	12
+ADC2	=	13
+DAC1	=	14
+DAC2	=	15
+
+HIVOLTAGE_OUT1	=	16	
+HIVOLTAGE_OUT2	=	17
+
+HIVOLTAGE_IN1	=	18
+HIVOLTAGE_IN2	=	19
+
+EX_OUT1		=	20
+EX_OUT2		=	21
+EX_IN1		=	22
+EX_IN2		=	23
+
+//-------------------------------------
+Send -> Device
+//-------------------------------------
+Pack1:void send_MapPinArr(byte * pArr, int lenth, int *err);
+//---
+byte 0: nPin
+byte 1: MapPinArr[0]
+byte 2: MapPinArr[1]
+..
+byte nPin: MapPinArr[nPin-1]
+//-------------------------------------
+//-------------------------------------
+Pack2: void send_ChanelSelectArr(byte * pArr, int lenth, int *err); get; time out
+//---
+byte 0	: nChanel = 84
+byte 1	: ChanelSelectArr[0]
+byte 2	: ChanelSelectArr[1]
+..
+byte nChanel: ChanelSelectArr[nChanel-1]
+//-------------------------------------
+//-------------------------------------
+Pack3: void send_ConfigPinArr(byte * pArr, int lenth, int *err); get; time out
+//---
+byte 0	: nChanel = 84
+byte 1	: ConfigPinArr[0]
+byte 2	: ConfigPinArr[1]
+..
+byte nChanel: ConfigPinArr[nChanel-1]
+//-------------------------------------
+
+[PLANINFOR]
+nPin = 10;	// max = 250
+nChanel = 84;	// max = 84	
+
+Comment	=		0	1	2	3	4	5	6	7	8	9
+MapPinArr =  		0;	0;	1;	3;	83;	80;	2;	4;	5;	0;
+
+Comment	=		0	1	2	3	4	5	6	..	79	80	81	82	83
+ChanelSelectArr =     	0;	1;	1;	1;	1;	1;	0;		0;	1;	0;	0;	1;
+
+Comment	=		0	1	2	3	4	5	6		79	80	81	82	83
+Comment	=		0; 	[1-23] ....;
+ConfigPinArr 	= 	0; 	9;	2;	10;	10;	11;	0;		0;	11;	0;	0;	11;				
+
+
+//-------------------------------------
+Pack4:void send_8_Power(float * pArr, int lenth, int *err); get; time out  LENGTH = 8x3 = 24
+// Gui nhan 1 luc 8 nguon
+//---
+Nguon1:
+float 0	: ON_OFF
+float 1	: USet(V)
+float 2	: ImaxSet(A)
+Nguon2:
+float 3	: ON_OFF
+float 4	: USet(V)
+float 5	: ImaxSet(A)
+Nguon3,4,5,6,7,8
+//--------
+ void Get(float *pArr, int lenth, int *err); Get ca 5 gia tri (gom set/get); LENTH 8 x 5 = 40
+// Nhan 1 luc 8 nguon
+//---
+Nguon1:
+float 0	: ON_OFF
+float 1	: USet(V)
+float 2	: ImaxSet(A)
+float 3 : UGet
+float 4 : IGet
+Nguon2:
+float 5	: ON_OFF
+float 6	: USet(V)
+float 7	: ImaxSet(A)
+float 8 : UGet
+float 9 : IGet
+Nguon 3,4,5,6,7,8
+//-------------------------------------
+[ConfigPinParam]
+Comment	=	P->Positive Power
+			ON_OFF	USet(V);	ImaxSet(A);	UGet?;	IGet?
+POWER_P1	=	0;	3.3;		2.0;		3.29;	0.56;
+POWER_P2	=	1;	3.3;		2.0;		3.29;	0.56;
+POWER_P3	=	0;	3.3;		2.0;		3.29;	0.56;
+POWER_P4	=	0;	3.3;		2.0;		3.29;	0.56;
+POWER_P5	=	0;	3.3;		2.0;		3.29;	0.56;
+Comment	=	N->Negative Power
+POWER_N6	=	0;	-3.3;		2.0;		-3.29;	0.56;
+POWER_N7	=	0;	-3.3;		2.0;		-3.29;	0.56;
+POWER_N8	=	0;	-3.3;		2.0;		-3.29;	0.56;
+
+Comment = Khong can thiet lap / gui
+GDN	= 	9
+//--------------------------------------------------------
+Pack5:void send_M4(float * pArr, int lenth, int *err);
+//---
+Comment		=	V_Compare: Nguong quyet dinh 0/1
+V_Compare_LOGIC_IN	= 	0.5
+
+Comment		=	V_Hi_Logic Volt (Logic 1->Muc cao)
+V_Hi_LOGIC_OUT	= 	5.0
+
+Comment	=	U_scale: value-> 1, 10, 100, 1000 (1 trong 4 gt)
+ADC1	=	100
+ADC2	=	1000
+
+Comment	=	V_offset: value-> [0.0,..,2.0]
+DAC1	=	0.5
+DAC2	=	1.5
+
+Comment		=	Value [0.0,..,80.0]	
+HIVOLTAGE_OUT1	=	0.5	
+HIVOLTAGE_OUT2	=	75.5
+
+Comment	=	U_scale: value-> 1, 10, 100, 1000 (1 trong 4 gt) (Chuong trình tự tính DK <3V)
+HIVOLTAGE_IN1	=	0..300V
+HIVOLTAGE_IN2	=	0..300V
+
+Comment		=	Ko truyen tham so, có cấu trúc
+EX_OUT1		=	0
+EX_OUT2		=	0
+EX_IN1		=	0
+EX_IN2		=	0
+
+//--------------------------------------------------------
+Bỏ chỉ để trong file data.dat
+Pack6:void send_MODE(float * pArr, int lenth, int *err);
+//---
+//[EXTRA]
+Comment		=	value: 0->internal; 1->external
+//SYNC_MODE	=	0
+
+Comment		=	value: 0..30 x 10^6 (Tan so mau: Hz)
+//F_SAMPLE	=	1000	
+
+//--------------------------------------------------------
+Pack7:void send_SUPPLY(float * pArr, int lenth, int *err);
+//---
+[SUPPLY]
+Comment		=	Nguon cap khong dam bao / khi hoat dong nguon chap, tang do ngot
+Comment		=	Han che nguoi dung thiet lap, phai co tinh nang cho admin
+		 
+Comment		=	nguong max  // Imax_12v_N (Negative) -> Dong cho nguon am
+Comment		=	Dong cho nguon
+Comment		=	Voltage	
+Imax_3v3	=	2.0; 
+Imax_5v		=	2.0; 
+Imax_12v	=	2.0; 
+Imax_12v_N	=	2.0; 
+Imax_12v_CPU	=	2.0; 
+Imax_12v_ROLE	=	2.0; 
+Imax_30v	=	2.0; 
+
+Comment		=	Nguong dien ap hoat dong xoay quanh 12v		
+U12v_UP		=	13
+U12v_DOWN 	=	10
+
+Comment		=	Nguong dien ap hoat dong xoay quanh 30v		
+U30v_UP		=	34
+U30v_DOWN 	=	28
+
+//-----------------------------	
+//Con file tin hieu gui
+//bool sign[84][64000]
